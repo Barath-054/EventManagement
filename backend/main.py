@@ -1,5 +1,12 @@
 import os
+import sys
 from contextlib import asynccontextmanager
+
+# Ensure repository root is on sys.path for Vercel and serverless environments
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -71,5 +78,6 @@ if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
     @app.get("/")
+    @app.get("/index.html")
     async def serve_index():
         return FileResponse(os.path.join(frontend_dir, "index.html"))

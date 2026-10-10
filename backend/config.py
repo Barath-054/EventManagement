@@ -19,8 +19,11 @@ class Settings:
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
-    # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./eventmate.db")
+    # Database (uses writable /tmp directory if running on Vercel or serverless)
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite:////tmp/eventmate.db" if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")) else "sqlite:///./eventmate.db"
+    )
     
     # Coimbatore Localities
     COIMBATORE_LOCALITIES = [

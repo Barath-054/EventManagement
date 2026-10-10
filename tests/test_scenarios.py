@@ -2,12 +2,12 @@ import pytest
 import json
 from decimal import Decimal
 from fastapi.testclient import TestClient
-from backend.main import app
+from backend.main import app as _backend_app
 from backend.database import SessionLocal, Base, engine
 from backend.seed_data import seed_database
 from backend.models import User, Event, Quotation, Payment, Booking, EventCategory, Service
 
-client = TestClient(app)
+client = TestClient(_backend_app)
 
 def setup_module():
     Base.metadata.create_all(bind=engine)
